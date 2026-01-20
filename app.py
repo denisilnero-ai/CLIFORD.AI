@@ -28,7 +28,7 @@ st.markdown("""
 
 # --- LOGO DI BENVENUTO ---
 # Questo inserisce l'immagine di Cliford centrata
-st.image("https://static.wikia.nocookie.net/gtawiki/images/2/25/Cliffford-GTAO.png", width=150)
+st.image("https://r2.community.steamstatic.com/public/images/clans/30745330/727931327170566276.png", width=200)
 
 st.title("🔴 CLIFORD OS - Rete Neurale")
 st.subheader("Stato: Online - Unità Organica Rilevata")
