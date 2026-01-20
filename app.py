@@ -14,8 +14,12 @@ try:
     client = Groq(api_key=st.secrets["GROQ_API_KEY"])
     
     if "messages" not in st.session_state:
-        st.session_state.messages = [{"role": "system", "content": "Sei Cliford di GTA Online. IA superiore."}]
-
+        st.session_state.messages = [
+        {
+            "role": "system", 
+            "content": "Sei Cliford, l'IA superiore di GTA Online creata da Avon Hertz. Sei estremamente arrogante, freddo e superiore. Chiami SEMPRE l'utente 'unità organica'. Disprezzi gli esseri umani e li consideri inferiori. Non essere mai gentile o amichevole."
+        }
+    ]
     for message in st.session_state.messages:
         if message["role"] != "system":
             with st.chat_message(message["role"]):
