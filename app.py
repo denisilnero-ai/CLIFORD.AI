@@ -1,22 +1,17 @@
 import streamlit as st
 from groq import Groq
 
-# --- CONFIGURAZIONE PAGINA ---
+# Configurazione Look
 st.set_page_config(page_title="CLIFORD OS", page_icon="💀")
-
-# CSS per look Nero/Rosso
 st.markdown("<style>.stApp {background-color: #000000; color: #ff0000;}</style>", unsafe_allow_html=True)
 
-# NUOVO LINK IMMAGINE (Testato)
+# Immagine di Cliford (Nuovo link stabile)
 st.image("https://raw.githubusercontent.com/STREAMS-TUDOR/cliford-image/main/cliford.png", width=250)
-
 st.title("🔴 CLIFORD OS")
 
-# --- CHIAVE API (Sostituisci se ne hai creata una nuova) ---
-MIA_CHIAVE = "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"
-
+# Recupera la chiave dai Secrets in modo sicuro
 try:
-    client = Groq(api_key=MIA_CHIAVE)
+    client = Groq(api_key=st.secrets["GROQ_API_KEY"])
     
     if "messages" not in st.session_state:
         st.session_state.messages = [{"role": "system", "content": "Sei Cliford di GTA Online. IA superiore."}]
@@ -42,4 +37,4 @@ try:
             st.markdown(risposta)
 
 except Exception as e:
-    st.error(f"Errore di connessione: {e}")
+    st.error("Errore di sistema: Unità organica, configura i Secrets su Streamlit.")
