@@ -28,7 +28,7 @@ st.markdown("""
 
 # --- LOGO DI BENVENUTO ---
 # Questo inserisce l'immagine di Cliford centrata
-st.image("https://x.com/GTAGFX/status/941078214948073473", width=200)
+st.image("https://images.gnwcdn.com/2017/articles/2017-12-12-17-04/gta-online-doomsday-heist-is-out-now-1513098254701.jpg", width=400)
 
 st.title(" CLIFORD OS - Rete Neurale")
 st.subheader("Stato: Online - Unità Organica Rilevata")
