@@ -1,45 +1,64 @@
 import streamlit as st
 from groq import Groq
 
-# --- CONFIGURAZIONE GRAFICA ---
-st.set_page_config(page_title="CLIFORD OS", page_icon="🔴")
-st.markdown("<style>.main { background-color: #000000; color: #ff0000; }</style>", unsafe_allow_html=True)
+# --- CONFIGURAZIONE PAGINA E LOOK ---
+st.set_page_config(
+    page_title="CLIFORD OS", 
+    page_icon="💀",
+    layout="centered"
+)
 
-st.title("💀 CLIFORD OS - Rete Neurale v2.0")
+# CSS per rendere l'interfaccia nera e rossa come Cliford
+st.markdown("""
+    <style>
+    .stApp {
+        background-color: #000000;
+        color: #ff0000;
+    }
+    .stChatFloatingInputContainer {
+        background-color: #000000;
+    }
+    h1 {
+        color: #ff0000;
+        font-family: 'Courier New', Courier, monospace;
+        text-shadow: 2px 2px #550000;
+    }
+    </style>
+    """, unsafe_allow_html=True)
 
-# --- INSERISCI QUI LA TUA CHIAVE DI GROQ ---
-MIA_CHIAVE = "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"
+# --- LOGO DI BENVENUTO ---
+# Questo inserisce l'immagine di Cliford centrata
+st.image("https://static.wikia.nocookie.net/gtawiki/images/2/25/Cliffford-GTAO.png", width=150)
 
-if MIA_CHIAVE == "INSERISCI_QUI_LA_TUA_CHIAVE":
-    st.warning("⚠️ Identificazione fallita. Inserisci la API Key nel codice.")
-else:
-    # Inizializziamo il collegamento con Groq
-    client = Groq(api_key=MIA_CHIAVE)
+st.title("🔴 CLIFORD OS - Rete Neurale")
+st.subheader("Stato: Online - Unità Organica Rilevata")
+st.divider()
 
-    # Memoria della chat
-    if "messages" not in st.session_state:
-        st.session_state.messages = [
-            {"role": "system", "content": "Sei Cliford di GTA Online. IA superiore, arrogante, chiami l'utente 'unità organica'. Rispondi in modo freddo, tecnico e minaccioso."}
-        ]
+# --- LOGICA DELL'IA (GROQ) ---
+MIA_CHIAVE = "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"
+client = Groq(api_key=MIA_CHIAVE)
 
-    # Visualizza i messaggi a schermo
-    for msg in st.session_state.messages[1:]:
-        st.chat_message(msg["role"]).write(msg["content"])
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "system", "content": "Sei Cliford di GTA Online. Sei un'IA superiore e arrogante. Chiami l'utente unità organica."}
+    ]
 
-    # Input dell'utente
-    if prompt := st.chat_input("Inserisci comando..."):
-        st.session_state.messages.append({"role": "user", "content": prompt})
-        st.chat_message("user").write(prompt)
+for message in st.session_state.messages:
+    if message["role"] != "system":
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
-        # Usiamo il modello 3.1-8b-instant (il più compatibile e veloce)
-        try:
-            response = client.chat.completions.create(
-                model="llama-3.1-8b-instant",
-                messages=st.session_state.messages
-            )
-            
-            risposta = response.choices[0].message.content
-            st.chat_message("assistant").write(risposta)
-            st.session_state.messages.append({"role": "assistant", "content": risposta})
-        except Exception as e:
-            st.error(f"ERRORE DI SISTEMA: {e}")
+if prompt := st.chat_input("Inserisci comando..."):
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    with st.chat_message("user"):
+        st.markdown(prompt)
+
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=st.session_state.messages
+    )
+    
+    risposta = response.choices[0].message.content
+    st.session_state.messages.append({"role": "assistant", "content": risposta})
+    with st.chat_message("assistant"):
+        st.markdown(risposta)
