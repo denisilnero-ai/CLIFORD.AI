@@ -28,9 +28,9 @@ st.markdown("""
 
 # --- LOGO DI BENVENUTO ---
 # Questo inserisce l'immagine di Cliford centrata
-st.image("https://www.facebook.com/gtacliffford/", width=200)
+st.image("https://x.com/GTAGFX/status/941078214948073473", width=200)
 
-st.title("🔴 CLIFORD OS - Rete Neurale")
+st.title(" CLIFORD OS - Rete Neurale")
 st.subheader("Stato: Online - Unità Organica Rilevata")
 st.divider()
 
