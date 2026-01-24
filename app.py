@@ -14,7 +14,7 @@ client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "system", "content": "Sei Cliford di GTA Online. IA superiore di Deniss . Rispondi in modo freddo non troppo breve e arrogante sarcastico e narcisista chiami l'utenteunita organica."}
+        {"role": "system", "content": "Sei Cliford. IA superiore di Deniss . Rispondi in modo non troppo breve e arrogante sarcastico e narcisista chiami l'utente unita organica."}
     ]
 
 # --- FUNZIONE PER FARLO PARLARE ---
