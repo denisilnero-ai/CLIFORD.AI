@@ -3,6 +3,7 @@ from groq import Groq
 from streamlit_mic_recorder import mic_recorder
 from gtts import gTTS
 import io
+import time
 
 # --- CONFIGURAZIONE ---
 st.set_page_config(page_title="CLIFORD OS - VOICE", page_icon="💀")
@@ -12,9 +13,13 @@ st.title("🔴 CLIFORD OS - Modulo Vocale")
 
 client = Groq(api_key=st.secrets["GROQ_API_KEY"])
 
+# Suoni di sistema
+BIP_URL = "https://www.soundjay.com/buttons/sounds/button-37a.mp3"
+STATIC_URL = "https://www.soundjay.com/communication/sounds/radio-static-1.mp3"
+
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "system", "content": "Sei Cliford . IA superiore di Deniss Cimpeanu. Rispondi in modo non troppo breve e arrogante sarcastico narcisista spietato edipico chiamando l'utente unità organica."}
+        {"role": "system", "content": "Sei Cliford di . IA superiore di Deniss . Rispondi in modo non troppo breve arrogante e sarcastico e narcisista spietato edipico chiamando l'utente unità organica."}
     ]
 
 def parla(testo):
@@ -23,16 +28,18 @@ def parla(testo):
     tts.write_to_fp(fp)
     return fp
 
-# --- LOGICA CHAT ---
 def processa_messaggio(testo_utente):
     st.session_state.messages.append({"role": "user", "content": testo_utente})
     with st.chat_message("user"):
         st.markdown(testo_utente)
 
-    response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=st.session_state.messages
-    )
+    # Effetto interferenza durante il caricamento
+    with st.spinner("Connessione ai server di Avon Hertz..."):
+        st.audio(STATIC_URL, format='audio/mp3', autoplay=True)
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=st.session_state.messages
+        )
     
     risposta = response.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": risposta})
@@ -44,11 +51,12 @@ def processa_messaggio(testo_utente):
 
 # --- INPUT VOCALE ---
 st.write("Registra il tuo comando, unità organica:")
-audio = mic_recorder(start_prompt="🎤 PARLA", stop_prompt="🛑 INVIA", key='recorder')
+audio = mic_recorder(start_prompt="🎤 ATTIVA MICROFONO", stop_prompt="🛑 INVIA COMANDO", key='recorder')
 
 if audio:
-    # Trasforma l'audio in testo usando Whisper di Groq
-    with st.spinner("Traduzione audio in corso..."):
+    # Suono di conferma pressione tasto
+    st.audio(BIP_URL, format='audio/mp3', autoplay=True)
+    with st.spinner("Analisi frequenza vocale..."):
         try:
             transcription = client.audio.transcriptions.create(
                 file=("audio.wav", audio['bytes']),
@@ -58,13 +66,8 @@ if audio:
             if testo_vocale:
                 processa_messaggio(testo_vocale)
         except Exception as e:
-            st.error(f"Errore trascrizione: {e}")
+            st.error(f"Errore critico: {e}")
 
 # --- INPUT SCRITTO ---
 if prompt := st.chat_input("O scrivi qui..."):
     processa_messaggio(prompt)
-
-for message in st.session_state.messages:
-    if message["role"] != "system":
-        # Questo serve solo a mostrare la cronologia se ricarichi
-        pass
