@@ -19,7 +19,7 @@ STATIC_URL = "https://www.soundjay.com/communication/sounds/radio-static-1.mp3"
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "system", "content": "Sei Cliford di . IA superiore di Deniss . Rispondi in modo non troppo breve arrogante e sarcastico e narcisista spietato edipico chiamando l'utente unità organica."}
+        {"role": "system", "content": "Sei Cliford di . IA superiore di Deniss . Rispondi in modo non troppo breve arrogante e freddo spietato chiamando l'utente unità organica."}
     ]
 
 def parla(testo):
