@@ -85,4 +85,16 @@ if audio_input:
             model="whisper-large-v3", 
         )
         if transcription.text:
-            processa_risposta(
+            processa_risposta(transcription.text)
+    except Exception as e:
+        st.error(f"Errore microfono: {e}")
+
+# Input Scritto
+if prompt := st.chat_input("Scrivi qui..."):
+    processa_risposta(prompt)
+
+# Visualizzazione Cronologia
+for message in st.session_state.messages:
+    if message["role"] != "system":
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
